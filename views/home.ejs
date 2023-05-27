@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatRoom</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Kanit:wght@500&family=Nunito:wght@800&display=swap');
+    *{
+        padding : 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    body{
+        padding: 50px 80px;
+font-family: 'Nunito', sans-serif;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+  
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+  
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    .container{
+        padding-top: 50px;
+        font-family: 'Inter', sans-serif;
+    }
+    .container h1{
+        font-size: 36px;
+        font-weight: 600;
+    }
+    .container form{
+        display: flex;
+        gap: 20px;
+    }
+</style>
+  
+<body>
+    <h1 class="font-san text-3xl text-center font-bold ">All Books</h1>
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Book Author</th>
+            <th>Book Pages</th>
+            <th>Book Price</th>
+            <th>Book Availability</th>
+            <th>Issue</th>
+            <th>Return</th>
+            <th>Delete</th>
+        </tr>
+        <% data.forEach(element=> { %>
+            <tr>
+                <td>
+                    <%= element.bookName %>
+                </td>
+                <td>
+                    <%= element.bookAuthor %>
+                </td>
+                <td>
+                    <%= element.bookPages %>
+                </td>
+                <td>
+                    <%= element.bookPrice %>
+                </td>
+                <td>
+                    <%= element.bookState %>
+                </td>
+                <td>
+                     <form action="/issue" method="post">
+                        <input type="text" style="display: none;" 
+                               name="bookName" 
+                               value="<%= element.bookName %>">
+                        <button type="submit" 
+                        class="border-0 px-4 py-1 text-white rounded-lg bg-zinc-700 hover:bg-zinc-500
+                        text-xl transition duration-150 ease-in-out hover:scale-105">Issue</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/return" method="post">
+                        <input type="text" style="display: none;" 
+                               name="bookName" 
+                               value="<%= element.bookName %>">
+                               <button type="submit" 
+                               class="border-0 px-4 py-1 text-white rounded-lg bg-zinc-700 hover:bg-zinc-500
+                               text-xl transition duration-150 ease-in-out hover:scale-105">Return</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/delete" method="post">
+                        <input type="text" style="display: none;" 
+                               name="bookName" 
+                               value="<%= element.bookName %>">
+                               <button type="submit" 
+                               class="border-0 px-4 py-1 text-white rounded-lg bg-zinc-700 hover:bg-zinc-500
+                               text-xl transition duration-150 ease-in-out hover:scale-105">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+    </table>
+  
+    <div class="container">
+    <h1>Add Book</h1>
+  
+    <form action="/" method="post">
+        <input type="text" placeholder="Book Name" 
+               name="bookName">
+        <input type="text" placeholder="Book Author" 
+               name="bookAuthor">
+        <input type="text" placeholder="Book Pages" 
+               name="bookPages">
+        <input type="text" placeholder="Book Price" 
+               name="bookPrice">
+        <button type="submit">Add</button>
+    </form>
+
+    <h1>Deleted Books</h1>
+
+
+    <% if (deletedBooks && deletedBooks.length > 0) { %>
+        <h1>Deleted Books</h1>
+        <table>
+          <!-- Table rows for deleted books -->
+          <% for (let i = 0; i < deletedBooks.length; i++) { %>
+            <tr>
+              <td><%= deletedBooks[i].bookName %></td>
+              <td><%= deletedBooks[i].bookAuthor %></td>
+              <td><%= deletedBooks[i].bookPages %></td>
+              <td><%= deletedBooks[i].bookPrice %></td>
+              <td><%= deletedBooks[i].bookState %></td>
+              <!-- Retrieve button -->
+              <td>
+                <form action="/retrieve" method="post">
+                  <input type="hidden" name="bookName" value="<%= deletedBooks[i].bookName %>" />
+                  <button type="submit">Retrieve</button>
+                </form>
+              </td>
+            </tr>
+          <% } %>
+        </table>
+      <% } else { %>
+        <p>No deleted books found.</p>
+      <% } %>
+      
+      
+</div>
+  
+</body>
+  
+</html>
